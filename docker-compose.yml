@@ -1,0 +1,44 @@
+x-global-config: &global-config
+  logging:
+    driver: json-file
+    options:
+      max-size: 50m
+  restart: always
+
+services:
+  pool:
+    build: pool
+    ports:
+      - "3448:3448"
+    <<: *global-config
+
+  miner:
+    build: cgminer
+    privileged: true
+    command:
+      -o stratum+tcp://pool:3448
+      -u ${STRATUM_USER:?}
+      --gekko-newpac-freq 50
+    <<: *global-config
+
+  peercoind:
+    image: peercoin/peercoind:0.13.1
+    environment:
+      HD_SEED: "${HD_SEED}"
+    command: >
+      -printtoconsole
+      -rpcuser=rpc
+      -rpcpassword=rpc
+      -server
+      -minting=0
+      -rpcworkqueue=96
+    volumes:
+      - peercoind-data:/data
+    <<: *global-config
+
+  redis:
+    image: redis:alpine
+    <<: *global-config
+
+volumes:
+  peercoind-data:

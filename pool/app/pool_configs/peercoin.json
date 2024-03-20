@@ -1,0 +1,60 @@
+{
+    "enabled": true,
+    "coin": "peercoin.json",
+
+    "address": "",
+
+    "rewardRecipients": {},
+
+    "paymentProcessing": {
+        "enabled": false,
+        "paymentInterval": 30,
+        "minimumPayment": 50,
+        "daemon": {
+            "host": "peercoind",
+            "port": 9902,
+            "user": "rpc",
+            "password": "rpc"
+        }
+    },
+
+    "ports": {
+       "3448": {
+           "diff": 32,
+           "varDiff": {
+               "minDiff": 16,
+               "maxDiff": 16384,
+               "targetTime": 15,
+               "retargetTime": 90,
+               "variancePercent": 30
+           }
+       }
+    },
+
+    "daemons": [
+        {
+            "host": "peercoind",
+            "port": 9902,
+            "user": "rpc",
+            "password": "rpc"
+        }
+    ],
+
+    "p2p": {
+        "enabled": true,
+        "host": "peercoind",
+        "port": 9901,
+        "disableTransactions": false
+    },
+
+    "mposMode": {
+        "enabled": false,
+        "host": "127.0.0.1",
+        "port": 3306,
+        "user": "me",
+        "password": "mypass",
+        "database": "ltc",
+        "checkPassword": false,
+        "autoCreateWorker": false
+    }
+}
