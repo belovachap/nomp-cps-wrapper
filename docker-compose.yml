@@ -10,30 +10,41 @@ services:
     build: pool
     ports:
       - "3448:3448"
+    depends_on:
+      peercoind:
+        condition: service_healthy
+      redis:
+        condition: service_started
     <<: *global-config
 
   miner:
     build: cgminer
     privileged: true
+    depends_on:
+      pool:
+        condition: service_started
     command:
       -o stratum+tcp://pool:3448
-      -u ${STRATUM_USER:?}
-      --gekko-newpac-freq 50
+      -u x
     <<: *global-config
 
   peercoind:
-    image: peercoin/peercoind:0.13.1
-    environment:
-      HD_SEED: "${HD_SEED}"
+    build: peercoind
     command: >
       -printtoconsole
       -rpcuser=rpc
       -rpcpassword=rpc
       -server
+      -rpcallowip=0.0.0.0/0
       -minting=0
       -rpcworkqueue=96
     volumes:
       - peercoind-data:/data
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
     <<: *global-config
 
   redis:
