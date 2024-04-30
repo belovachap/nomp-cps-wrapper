@@ -25,13 +25,13 @@
             "purgeInterval": 300
         },
         "redis": {
-            "host": "redis",
+            "host": "127.0.0.1",
             "port": 6379
         }
     },
 
     "website": {
-        "enabled": false,
+        "enabled": true,
         "host": "0.0.0.0",
         "port": 80,
         "stratumHost": "cryppit.com",
@@ -47,7 +47,7 @@
     },
 
     "redis": {
-        "host": "redis",
+        "host": "127.0.0.1",
         "port": 6379
     },
 
